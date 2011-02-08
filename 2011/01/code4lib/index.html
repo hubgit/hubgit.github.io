@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Code4Lib 2011</title>
+<link rel="stylesheet" href="epiclock/stylesheet/jquery.epiclock.css">
+<style>
+td { vertical-align:top;text-align:left;padding:2px 5px; }
+tr:nth-child(2n+1) { background-color: #ddd; }
+#mibbit { position: fixed; top: 0; right: 0; width: 800px; height: 100%; }
+</style>
+</head>
+<body>
+
+<object type="application/x-shockwave-flash" style="width:640px; height:380px;" data="http://www.indiana.edu/~video/stream/player.swf?livestream.file=C4L2011_session_1&amp;plugins=livestream-1,title=C4L2011_session_1&amp;config=http://www.indiana.edu/~video/stream/configlive.xml"></object>
+
+<div style="margin:10px 0">Time in Bloomington, IL: <span id="clock"></div>
+
+<h2><a href="http://www.indiana.edu/~uits/code4lib/program/conference.php">Programme</a></h2>
+<table id="events"><tbody/></table>
+
+<!--<object id="mibbit" type="text/html" data="http://widget.mibbit.com/?settings=3e2444dc6dd7a24ee346a4d3759709a3&server=chat.freenode.net&channel=%23code4lib"></object>-->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="epiclock/javascript/jquery.dateformat.js"></script>
+<script src="epiclock/javascript/jquery.epiclock.js"></script>
+
+<script>
+function App(){
+	var self = this;
+
+	this.init = function(){
+		$.getJSON("http://query.yahooapis.com/v1/public/yql/hubyql/code4libcal?callback=?", { format: "json" }, self.calendarLoaded)
+		$('#clock').epiclock({ format: 'h:i A', offset: { hours: -5 } })
+	}
+
+	this.calendarLoaded = function(data){
+		var container = $("#events tbody")
+
+		var rows = data.query.results.tr
+		var heading = rows[0].th.h3
+		var items = []
+		for (var i = 1; i < rows.length; i++){
+			var item = rows[i].td			
+			var row = $("<tr class='event'/>").appendTo(container)
+			$("<td class='time'/>").appendTo(row).append(item[0].p)
+			$("<td class='title'/>").appendTo(row).append(item[1].strong).append("<br>").append($("<em/>").append(item[1].em))
+		}
+		
+	}
+}
+
+var app = new App
+$().ready(app.init)
+</script>
+</body>
+</html>
+
+
