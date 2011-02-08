@@ -8,11 +8,19 @@
 td { vertical-align:top;text-align:left;padding:2px 5px; }
 tr:nth-child(2n+1) { background-color: #ddd; }
 #mibbit { position: fixed; top: 0; right: 0; width: 800px; height: 100%; }
+#streams .active { font-weight: bold; }
 </style>
 </head>
 <body>
 
-<object type="application/x-shockwave-flash" style="width:640px; height:380px;" data="http://www.indiana.edu/~video/stream/player.swf?livestream.file=C4L2011_session_2&amp;plugins=livestream-1,title=C4L2011_session_2&amp;config=http://www.indiana.edu/~video/stream/configlive.xml"></object>
+<object id="video" type="application/x-shockwave-flash" style="width:640px; height:380px;" data="http://www.indiana.edu/~video/stream/player.swf?livestream.file=C4L2011_session_2&amp;plugins=livestream-1,title=C4L2011_session_2&amp;config=http://www.indiana.edu/~video/stream/configlive.xml"></object>
+
+<ul id="streams">
+	<li><a href="#C4L2011_session_1">Session 1</a></li>
+	<li><a href="#C4L2011_session_2" class="active">Session 2</a></li>
+	<li><a href="#C4L2011_session_3">Session 3</a></li>
+	<li><a href="#C4L2011_session_4">Session 4</a></li>
+</ul>
 
 <div style="margin:10px 0">Time in Bloomington, IL: <span id="clock"></div>
 
@@ -27,11 +35,13 @@ tr:nth-child(2n+1) { background-color: #ddd; }
 
 <script>
 function App(){
-	var self = this;
+	var self = this
 
 	this.init = function(){
+		$("#streams a").click(self.switchStream)
 		$.getJSON("http://query.yahooapis.com/v1/public/yql/hubyql/code4libcal?callback=?", { format: "json" }, self.calendarLoaded)
 		$('#clock').epiclock({ format: 'h:i A', offset: { hours: -5 } })
+
 	}
 
 	this.calendarLoaded = function(data){
@@ -47,6 +57,15 @@ function App(){
 			$("<td class='title'/>").appendTo(row).append(item[1].strong).append("<br>").append($("<em/>").append(item[1].em))
 		}
 		
+	}
+
+	this.switchStream = function(event){
+		var node = $("#video")
+		$("#streams .active").removeClass("active")
+		var stream = $(this).attr("href").replace(/^#/, "")
+		node.attr("data", node.attr("data").replace(/C4L2011_session_\d/g, stream))
+		$(this).addClass("active")
+		return false
 	}
 }
 
