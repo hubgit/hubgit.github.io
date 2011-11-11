@@ -2,17 +2,21 @@
 <head>
   <title>Converting PDF To Text using pdf.js</title>
   <style>
-  body { padding: 10px; }
-  #text, iframe { border:none; vertical-align:top; width:400px; height:600px; display: inline-block; }
-  #text { font:13px Helvetica,sans-serif; padding: 10px; whitespace:wrap; }
-  #pdf { margin: 10px; }
+  html, body { width: 100%; height: 100%; overflow-y: hidden; padding: 0; margin: 0; }
+  body { font: 13px Helvetica,sans-serif; }
+  body > div { width: 40%; height: 100%; overflow-y: auto; display: inline-block; vertical-align: top; }
+  iframe { border: none; width: 100%; height: 100%; }
+  #text { padding: 10px; box-shadow: 0 0 5px #777; border-radius: 5px; margin: 10px; }
+  #pdftotext { height: 50px; }
   </style>
 </head>
 
-<body style="padding:10px">
-  <iframe id="pdftotext" src="../"></iframe>
-  <div id="text">Extracting text from an example PDF file using only Javascript.<br>Tested in Chrome 16 and Firefox 9.</div>
-  <iframe id="pdf" src="journal.pone.0026738.pdf"></iframe>
+<body>
+  <div>
+    <iframe id="pdftotext" src="../"></iframe>
+    <div id="text"><div id="intro">Extracting text from a PDF file using only Javascript.<br>Tested in Chrome 16 and Firefox 9.</div></div>
+  </div>
+  <div><iframe id="pdf" src="journal.pone.0026738.pdf"></iframe></div>
     
   <script>
   var pdfURL = document.getElementById("pdf").getAttribute("src");
