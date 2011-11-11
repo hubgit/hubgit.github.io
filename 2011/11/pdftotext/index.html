@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>PDFToText</title>
+</head>
+
+<body style="font:13px Helvetica,sans-serif">
+  <div id="message"></div>
+  <div id="viewer" style="display:none"></div>
+  <div id="text-layer" style="display:none"></div>
+  
+  <div>Uses <a href="https://github.com/arturadib/pdf.js/tree/text-select/" target="_blank">pdf.js + text-select</a>, by Mozilla and Artur Adib.</div>
+
+  <script id="pdf-js" src="pdf.js"></script>
+  <script>PDFJS.workerSrc = document.getElementById("pdf-js").getAttribute("src");</script>
+
+  <script src="app.js"></script>
+  <script>var app = new App;</script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<html>
+<head>
+  <title>Converting PDF To Text using pdf.js</title>
+  <style>
+  body { padding: 10px; }
+  #text, iframe { border:none; vertical-align:top; width:400px; height:600px; display: inline-block; }
+  #text { font:13px Helvetica,sans-serif; padding: 10px; whitespace:wrap; }
+  #pdf { margin: 10px; }
+  </style>
+</head>
+
+<body style="padding:10px">
+  <iframe id="pdftotext" src="../"></iframe>
+  <div id="text"></div>
+  <iframe id="pdf" src="journal.pone.0026738.pdf"></iframe>
+    
+  <script>
+  var pdfURL = document.getElementById("pdf").getAttribute("src");
+  var iframe = document.getElementById("pdftotext");
+  
+  window.addEventListener("message", function(event){
+    if (event.source != iframe.contentWindow) return;
+    
+    switch (event.data){
+      case "ready":
+        var xhr = new XMLHttpRequest;
+        xhr.open('GET', pdfURL, true);
+        xhr.responseType = "arraybuffer";
+
+        xhr.onload = function(event) {
+          iframe.contentWindow.postMessage(this.response, "*");
+        };
+
+        xhr.send();
+      break;
+      
+      default:
+        document.getElementById("text").textContent = event.data.replace(/\s+/g, " ");
+      break;
+    }
+  }, true);
+  </script>
+</body>
+</html>
