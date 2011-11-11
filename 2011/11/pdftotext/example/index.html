@@ -4,42 +4,50 @@
   <style>
   html, body { width: 100%; height: 100%; overflow-y: hidden; padding: 0; margin: 0; }
   body { font: 13px Helvetica,sans-serif; }
-  body > div { width: 40%; height: 100%; overflow-y: auto; display: inline-block; vertical-align: top; }
+  body > div { width: 48%; height: 100%; overflow-y: auto; display: inline-block; vertical-align: top; }
   iframe { border: none; width: 100%; height: 100%; }
-  #text { padding: 10px; box-shadow: 0 0 5px #777; border-radius: 5px; margin: 10px; }
-  #pdftotext { height: 50px; }
+  #output { padding: 10px; box-shadow: 0 0 5px #777; border-radius: 5px; margin: 10px; }
+  #processor { height: 50px; }
   </style>
 </head>
 
 <body>
   <div>
-    <iframe id="pdftotext" src="../"></iframe>
-    <div id="text"><div id="intro">Extracting text from a PDF file using only Javascript.<br>Tested in Chrome 16 and Firefox 9.</div></div>
+    <!-- embed the pdftotext web app as an iframe -->
+    <iframe id="processor" src="../"></iframe>
+    
+    <!-- a container for the output -->
+    <div id="output"><div id="intro">Extracting text from a PDF file using only Javascript.<br>Tested in Chrome 16 and Firefox 9.</div></div>
   </div>
-  <div><iframe id="pdf" src="journal.pone.0026738.pdf"></iframe></div>
+  
+  <div>
+    <!-- the PDF file must be on the same domain as this page -->
+    <iframe id="input" src="journal.pone.0026738.pdf"></iframe>
+  </div>
     
   <script>
-  var pdfURL = document.getElementById("pdf").getAttribute("src");
-  var iframe = document.getElementById("pdftotext");
+  var input = document.getElementById("input");
+  var processor = document.getElementById("processor");
+  var output = document.getElementById("output");
   
   window.addEventListener("message", function(event){
-    if (event.source != iframe.contentWindow) return;
+    if (event.source != processor.contentWindow) return;
     
     switch (event.data){
       case "ready":
         var xhr = new XMLHttpRequest;
-        xhr.open('GET', pdfURL, true);
+        xhr.open('GET', input.getAttribute("src"), true);
         xhr.responseType = "arraybuffer";
 
         xhr.onload = function(event) {
-          iframe.contentWindow.postMessage(this.response, "*");
+          processor.contentWindow.postMessage(this.response, "*");
         };
 
         xhr.send();
       break;
       
       default:
-        document.getElementById("text").textContent = event.data.replace(/\s+/g, " ");
+        output.textContent = event.data.replace(/\s+/g, " ");
       break;
     }
   }, true);
