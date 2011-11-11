@@ -1,14 +1,16 @@
 function App(){
   var self = this;
+  this.complete = 0;
   
   this.pdfToText = function(data){    
     var div = document.getElementById('viewer');
-    var textLayer = document.getElementById('text-layer');   
-
+    
     // render the first pages
     var pdf = new PDFJS.PDFDoc(data);
+    var total = pdf.numPages;
     
-    for (i = 1; i <= pdf.numPages; i++){      
+    for (i = 1; i <= total; i++){
+      //self.layers.push("");     
       var page = pdf.getPage(i);
 
       var canvas = document.createElement('canvas');
@@ -25,20 +27,28 @@ function App(){
       context.fillRect(0, 0, canvas.width, canvas.height);
       context.restore();
       
-      if (i < pdf.numPages){
-        self.setMessage("Rendering...");
-        page.startRendering(context, null, textLayer);
-        continue;
-      }
+      self.setMessage("Rendering...");
       
-      // last page
+      var textLayer = document.createElement('div');
+      textLayer.className = 'textLayer';
+      document.body.appendChild(textLayer);
+      
       page.startRendering(context, function(){
-        self.setMessage("Finished rendering.");
-        // TODO: a real callback for when rendering has finished
-        window.setTimeout(function(){ 
-          self.sendOutput(textLayer.textContent); 
-          self.setMessage("Done!");
-        }, 500);
+        if (++self.complete == total){
+          self.setMessage("Finished rendering. Extracting text...");
+          
+          // TODO: a real callback for when it's finished rendering
+          window.setTimeout(function(){
+            var layers = [];
+            var nodes = document.querySelectorAll(".textLayer > div");
+            for (var j = 0; j < nodes.length; j++){
+              layers.push(nodes[j].textContent + "\n");
+            }
+            self.sendOutput(layers.join("\n"));
+            
+            self.setMessage("Done!");
+          }, 1000);
+        }
       }, textLayer);
     }
   };
@@ -60,6 +70,6 @@ function App(){
   }
 
   window.addEventListener("message", self.receiveInput, true);
-  //self.setMessage("Ready");
+  self.setMessage("Ready");
   self.sendOutput("ready"); 
 }
