@@ -10,7 +10,6 @@ function App(){
     var total = pdf.numPages;
     
     for (i = 1; i <= total; i++){
-      //self.layers.push("");     
       var page = pdf.getPage(i);
 
       var canvas = document.createElement('canvas');
@@ -37,7 +36,6 @@ function App(){
         if (++self.complete == total){
           self.setMessage("Finished rendering. Extracting text...");
           
-          // TODO: a real callback for when it's finished rendering
           window.setTimeout(function(){
             var layers = [];
             var nodes = document.querySelectorAll(".textLayer > div");
