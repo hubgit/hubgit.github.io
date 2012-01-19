@@ -26,7 +26,7 @@
 	<fb:add-to-timeline></fb:add-to-timeline>
 
 	<!-- Action button -->
-	<form onsubmit="postUpdate()">
+	<form onsubmit="postUpdate(); return false;">
 		<input id="fb-submit" type="submit" value="Tell Facebook I Read This!">
 	</form>
 
@@ -39,7 +39,6 @@
 				document.getElementById("fb-submit").value("Posted!");
 			}
 		});
-		return false;
 	}
 	</script>
 	
