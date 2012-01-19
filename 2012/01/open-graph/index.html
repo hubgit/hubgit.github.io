@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html> 
+
+<head prefix="og: http://ogp.me/ns# og-test-alf: http://ogp.me/ns/apps/og-test-alf#"> 
+	<meta property="fb:app_id" content="361907083823832"> 
+	<meta property="og:url" content="http://www.mendeley.com/research/how-to-choose-a-good-scientific-problem/"> 
+	<meta property="og:type" content="og-test-alf:document"> 
+	<meta property="og:title" content="How to choose a good scientific problem"> 
+	<meta property="og:image" content="http://s3.amazonaws.com/mendeley-pdf-previews/47/87/4787da46c9b91cb69f7f3449e20b210fe970e234_tn.png"> 
+	<meta property="og:description" content="Choosing good problems is essential for being a good scientist. But what is a good problem, and how do you choose one? The subject is not usually discussed explicitly within our profession. Scientists are expected to be smart enough to figure it out on their own and through the observation of their teachers. This lack of explicit discussion leaves a vacuum that can lead to approaches such as choosing problems that can give results that merit publication in valued journals, resulting in a job and tenure."> 
+	<style>.abstract { max-width: 50em; }</style>
+</head> 
+
+<body> 
+	<!-- Facebook init -->
+	<div id="fb-root"></div>
+
+	<!-- Actual page content -->
+	<h3>How to choose a good scientific problem</h3> 
+	
+	<p class="abstract">Choosing good problems is essential for being a good scientist. But what is a good problem, and how do you choose one? The subject is not usually discussed explicitly within our profession. Scientists are expected to be smart enough to figure it out on their own and through the observation of their teachers. This lack of explicit discussion leaves a vacuum that can lead to approaches such as choosing problems that can give results that merit publication in valued journals, resulting in a job and tenure.</p>
+	
+	<p><img title="PDF Preview" src="http://s3.amazonaws.com/mendeley-pdf-previews/47/87/4787da46c9b91cb69f7f3449e20b210fe970e234_tn.png"/></p>       
+	
+	<!-- Add to Timeline button -->
+	<fb:add-to-timeline></fb:add-to-timeline>
+
+	<!-- Action button -->
+	<form onsubmit="postUpdate()">
+		<input id="fb-submit" type="submit" value="Tell Facebook I Read This!">
+	</form>
+
+	<script type="text/javascript">
+	function postUpdate(event){
+		event.preventDefault();
+		FB.api('/me/og-test-alf:read?item=http://www.mendeley.com/research/how-to-choose-a-good-scientific-problem/','post', function(response) {
+			if (!response || response.error) {
+				alert('Error occured');
+			} else {
+				document.getElementById("fb-submit").value("Posted!");
+			}
+		});
+	}
+	</script>
+	
+	<!-- Recent Activity -->
+	<fb:activity actions="mendeley-alf:read"></fb:activity>
+	
+	<script src="http://connect.facebook.net/en_US/all.js"></script>
+	<script>FB.init({ appId:"361907083823832", cookie:true, status:true, xfbml:true, oauth:true });</script>
+	<script>
+	if (typeof FB != "function") {
+		var node = document.getElementById("fb-submit");
+		node.parentNode.removeNode(node);
+	}
+	</script>
+</body> 
+</html>
