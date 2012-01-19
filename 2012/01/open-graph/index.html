@@ -31,8 +31,7 @@
 	</form>
 
 	<script type="text/javascript">
-	function postUpdate(event){
-		event.preventDefault();
+	function postUpdate(){
 		FB.api('/me/og-test-alf:read?item=http://www.mendeley.com/research/how-to-choose-a-good-scientific-problem/','post', function(response) {
 			if (!response || response.error) {
 				alert('Error occured');
