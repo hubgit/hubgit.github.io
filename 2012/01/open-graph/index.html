@@ -14,6 +14,8 @@
 <body> 
 	<!-- Facebook init -->
 	<div id="fb-root"></div>
+	<script src="http://connect.facebook.net/en_US/all.js"></script>
+	<script>FB.init({ appId:"361907083823832", cookie:true, status:true, xfbml:true, oauth:true });</script>
 
 	<!-- Actual page content -->
 	<h3>How to choose a good scientific problem</h3> 
@@ -32,7 +34,7 @@
 
 	<script type="text/javascript">
 	function postUpdate(){
-		FB.api('/me/og_test_alf:read', 'post', { article: location.href }, function(response) {
+		FB.api('/me/og_test_alf:read', 'post', { article: "http://www.mendeley.com/research/how-to-choose-a-good-scientific-problem/" }, function(response) {
 			if (!response || response.error) {
 				alert('Error occured');
 			} else {
@@ -44,14 +46,5 @@
 	
 	<!-- Recent Activity -->
 	<fb:activity actions="og_test_alf:read"></fb:activity>
-	
-	<script src="http://connect.facebook.net/en_US/all.js"></script>
-	<script>FB.init({ appId:"361907083823832", cookie:true, status:true, xfbml:true, oauth:true });</script>
-	<script>
-	if (typeof FB != "object") {
-		var node = document.getElementById("fb-submit");
-		node.parentNode.removeChild(node);
-	}
-	</script>
 </body> 
 </html>
