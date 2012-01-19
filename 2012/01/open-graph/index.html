@@ -4,7 +4,7 @@
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# og_test_alf: http://ogp.me/ns/fb/og_test_alf#">
 	<meta property="fb:app_id" content="361907083823832"> 
 	<meta property="og:url" content="http://www.mendeley.com/research/how-to-choose-a-good-scientific-problem/"> 
-	<meta property="og:type" content="og_test_alf:item"> 
+	<meta property="og:type" content="og_test_alf:article"> 
 	<meta property="og:title" content="How to choose a good scientific problem"> 
 	<meta property="og:image" content="http://s3.amazonaws.com/mendeley-pdf-previews/47/87/4787da46c9b91cb69f7f3449e20b210fe970e234_tn.png"> 
 	<meta property="og:description" content="Choosing good problems is essential for being a good scientist. But what is a good problem, and how do you choose one? The subject is not usually discussed explicitly within our profession. Scientists are expected to be smart enough to figure it out on their own and through the observation of their teachers. This lack of explicit discussion leaves a vacuum that can lead to approaches such as choosing problems that can give results that merit publication in valued journals, resulting in a job and tenure."> 
@@ -32,7 +32,7 @@
 
 	<script type="text/javascript">
 	function postUpdate(){
-		FB.api('/me/og_test_alf:read?item=' + encodeURIComponent(location.href),'post', function(response) {
+		FB.api('/me/og_test_alf:read?article=' + encodeURIComponent(location.href),'post', function(response) {
 			if (!response || response.error) {
 				alert('Error occured');
 			} else {
@@ -43,7 +43,7 @@
 	</script>
 	
 	<!-- Recent Activity -->
-	<fb:activity actions="mendeley-alf:read"></fb:activity>
+	<fb:activity actions="og_test_alf:read"></fb:activity>
 	
 	<script src="http://connect.facebook.net/en_US/all.js"></script>
 	<script>FB.init({ appId:"361907083823832", cookie:true, status:true, xfbml:true, oauth:true });</script>
