@@ -13,7 +13,7 @@
 <script>
 $("#skype").click(function(){
  location.href = "skype:+" + $(this).data("tel") + "?call";
-});
+}).click();
 </script>
 
 <? else: ?>
