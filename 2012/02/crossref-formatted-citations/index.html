@@ -5,44 +5,89 @@
 <style>
 	body { font-family: sans-serif; }
 	form { margin-bottom: 1em; }
-	pre { max-width: 100%; overflow-x: auto; padding-bottom: 10px; }
+	.loaded { display: none; }
 </style>
 
 <h1>CrossRef DOI &rArr; formatted citation, cross-domain</h1>
 
 <p>This demonstration uses <a href="http://www.crossref.org/CrossTech/2011/11/turning_dois_into_formatted_ci.html">CrossRef's formatted citation service</a> to produce a BibTeX-formatted citation from a DOI.</p>
-
+	
 <h2>DOI</h2>
 
-<form id="input">
-	<input name="doi" value="10.1371/journal.pone.0032228" size="40">
-	<input type="submit" value="format">
-</form>
+<p class="loading">Loading styles and locales&hellip;</p>
 
-<h2>BibTeX-formatted citation</h2>
+<div class="loaded">
+	<form id="input">
+		<div>
+			<label>DOI: <input name="doi" value="10.1371/journal.pone.0032228" size="40"></label>
+			<input type="submit" value="format">
+		</div>
+		<div>
+			<label for="style">Citation style: </label><br><label for="locale">Locale: </select></label>
+		</div>
+	</form>
+</div>
 
-<pre>
-	<code id="result">fetching&hellip;</code>
-</pre>
+<h2 class="loaded">Formatted citation</h2>
+
+<div><code id="result">fetching&hellip;</code></div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
 <script>	
-	var fetchCitation = function(event){
-		event.preventDefault();
+	var resultContainer = $("#result");
+	
+	var fetchCitation = function(){		
+		var form = $("#input");
 		
-		$("#result").html("Fetching&hellip;");
+		resultContainer.html("Fetching&hellip;");
+		
+		var doi = form.find("[name=doi]").val();
+		var style = form.find("[name=style]").val();
+		var locale = form.find("[name=locale]").val();
 		
 		$.ajax({
-			url: "http://data.crossref.org/" + $("input[name=doi]", this).val(),
-			headers: { 
-				"Accept": "text/bibliography; style=bibtex",
-			},
+			url: "http://data.crossref.org/" + doi,
+			headers: { "Accept": "text/bibliography; style=" + style + "; locale=" + locale },
 			success: function(data){
-				$("#result").text(data);
-			}
+				resultContainer.text(data);
+			},
+			error: function(data){
+				resultContainer.text("There was an error fetching the formatted citation.");
+			},
 		});
 	};
+
 	
-	$("#input").submit(fetchCitation).submit();
+	$.when(
+		$.getJSON("http://data.crossref.org/styles"), 
+		$.getJSON("http://data.crossref.org/locales")
+	)
+	.done(function(stylesResponse, localesResponse){
+		var form = $("#input");
+		
+		var select = $("<select/>", { name: "style" });
+		$.each(stylesResponse[0].sort(), function(index, value){
+			$("<option/>", { text: value }).appendTo(select);
+		});
+		select.appendTo(form.find("label[for=style]"));
+		select.val("bibtex");
+		
+		var select = $("<select/>", { name: "locale" });
+		$.each(localesResponse[0].sort(), function(index, value){
+			$("<option/>", { text: value }).appendTo(select);
+		});
+		select.appendTo(form.find("label[for=locale]"));
+		select.val("en-US");
+		
+		$(".loading").hide();
+		$(".loaded").show();
+		
+		form.submit(function(event){
+			event.preventDefault();
+			fetchCitation();
+		}).submit();
+		
+		form.find("select").on("change", fetchCitation);
+	});
 </script>
