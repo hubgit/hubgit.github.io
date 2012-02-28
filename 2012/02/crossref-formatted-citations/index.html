@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<title>CrossRef DOI &rArr; formatted citation, cross-domain</title>
+
+<style>
+	body { font-family: sans-serif; }
+	form { margin-bottom: 1em; }
+	pre { max-width: 100%; overflow-x: auto; padding-bottom: 10px; }
+</style>
+
+<h1>CrossRef DOI &rArr; formatted citation, cross-domain</h1>
+
+<p>This demonstration uses <a href="http://www.crossref.org/CrossTech/2011/11/turning_dois_into_formatted_ci.html">CrossRef's formatted citation service</a> to produce a BibTeX-formatted citation from a DOI.</p>
+
+<h2>DOI</h2>
+
+<form id="input">
+	<input name="doi" value="10.1371/journal.pone.0032228" size="40">
+	<input type="submit" value="format">
+</form>
+
+<h2>BibTeX-formatted citation</h2>
+
+<pre>
+	<code id="result">fetching&hellip;</code>
+</pre>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+<script>	
+	var fetchCitation = function(event){
+		event.preventDefault();
+		
+		$("#result").html("Fetching&hellip;");
+		
+		$.ajax({
+			url: "http://data.crossref.org/" + $("input[name=doi]", this).val(),
+			headers: { 
+				"Accept": "text/bibliography; style=bibtex",
+			},
+			success: function(data){
+				$("#result").text(data);
+			}
+		});
+	};
+	
+	$("#input").submit(fetchCitation).submit();
+</script>
