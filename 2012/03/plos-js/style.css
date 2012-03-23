@@ -1,0 +1,78 @@
+html, body {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	font-family: sans-serif;
+	font-size: 14px;
+}
+
+ol {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	background-color: #eee;
+}
+
+ol a {
+	display: block;
+}
+
+#subjects-container, #articles-container {
+	display: inline-block;
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	border: none;
+}
+
+#subjects-container {
+	width: 30%;
+}
+
+#articles-container {
+	width: 69%;
+}
+
+#subjects {
+	margin: 10px 0;
+}
+
+#articles {
+	margin: 0 10px;
+}
+
+#total {
+	padding: 10px;
+}
+
+.subject {
+	padding: 0 10px;
+}
+
+.subject a {
+	padding: 1px 50px 1px 0;
+	position: relative;
+	display: block;
+}
+
+.article {
+	padding: 0 0 5px 0;
+}
+
+.count {
+	position: absolute;
+	right: 0;
+}
+
+.date {
+	color: #777;
+}
