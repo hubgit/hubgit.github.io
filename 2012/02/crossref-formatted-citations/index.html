@@ -33,7 +33,7 @@
 
 <h2 class="loaded">Formatted citation</h2>
 
-<ul id="results">fetching&hellip;</ul>
+<ul id="results"></ul>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
@@ -97,6 +97,6 @@
 			fetchCitations();
 		}).submit();
 		
-		form.find("select").on("change", fetchCitation);
+		form.find("select").on("change", fetchCitations);
 	});
 </script>
