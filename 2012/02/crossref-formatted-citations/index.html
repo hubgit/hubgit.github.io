@@ -80,7 +80,7 @@
 			$("<option/>", { text: value }).appendTo(select);
 		});
 		select.appendTo(form.find("label[for=style]"));
-		select.val("bibtex");
+		select.val("apa");
 		
 		var select = $("<select/>", { name: "locale" });
 		$.each(localesResponse[0].sort(), function(index, value){
