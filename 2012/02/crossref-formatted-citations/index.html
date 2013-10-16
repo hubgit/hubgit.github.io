@@ -6,6 +6,7 @@
 	body { font-family: sans-serif; }
 	form { margin-bottom: 1em; }
 	.loaded { display: none; }
+	.results { list-style-type: none; font-family: monospace; }
 </style>
 
 <h1>CrossRef DOI &rArr; formatted citation, cross-domain</h1>
@@ -19,42 +20,50 @@
 <div class="loaded">
 	<form id="input">
 		<div>
-			<label>DOI: <input name="doi" value="10.1371/journal.pone.0032228" size="40"></label>
-			<input type="submit" value="format">
+			<label>DOIs (1 per line): <textarea name="doi" rows="5">10.1371/journal.pone.0032228</textarea></label>
 		</div>
 		<div>
 			<label for="style">Citation style: </label><br><label for="locale">Locale: </select></label>
+		</div>
+		<div>			
+			<input type="submit" value="format">
 		</div>
 	</form>
 </div>
 
 <h2 class="loaded">Formatted citation</h2>
 
-<div><code id="result">fetching&hellip;</code></div>
+<ul id="results">fetching&hellip;</ul>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
 <script>	
-	var resultContainer = $("#result");
-	
-	var fetchCitation = function(){		
+	var resultsContainer = $("#results");
+
+	var fetchCitations = function(){		
 		var form = $("#input");
 		
-		resultContainer.html("Fetching&hellip;");
+		resultsContainer.empty();
 		
 		var doi = form.find("[name=doi]").val();
 		var style = form.find("[name=style]").val();
 		var locale = form.find("[name=locale]").val();
 		
-		$.ajax({
-			url: "http://data.crossref.org/" + doi,
-			headers: { "Accept": "text/bibliography; style=" + style + "; locale=" + locale },
-			success: function(data){
-				resultContainer.text(data);
-			},
-			error: function(data){
-				resultContainer.text("There was an error fetching the formatted citation.");
-			},
+		$.each(doi.split("\n"), function(index, doi) {
+			doi = $.trim(doi);
+			
+			var resultContainer = $("<li/>", { text: "Fetching…" }).appendTo(resultsContainer);
+			
+			$.ajax({
+				url: "http://data.crossref.org/" + encodeURIComponent(doi),
+				headers: { "Accept": "text/bibliography; style=" + style + "; locale=" + locale },
+				success: function(data){
+					resultContainer.text(data);
+				},
+				error: function(data){
+					resultContainer.text("There was an error fetching the formatted citation for DOI " + doi);
+				},
+			});
 		});
 	};
 
@@ -85,7 +94,7 @@
 		
 		form.submit(function(event){
 			event.preventDefault();
-			fetchCitation();
+			fetchCitations();
 		}).submit();
 		
 		form.find("select").on("change", fetchCitation);
