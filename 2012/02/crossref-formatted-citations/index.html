@@ -69,21 +69,21 @@
 
 	
 	$.when(
-		$.getJSON("http://data.crossref.org/styles"), 
-		$.getJSON("http://data.crossref.org/locales")
+		$.getJSON("http://api.crossref.org/styles"), 
+		$.getJSON("http://api.crossref.org/locales")
 	)
 	.done(function(stylesResponse, localesResponse){
 		var form = $("#input");
 		
 		var select = $("<select/>", { name: "style" });
-		$.each(stylesResponse[0].sort(), function(index, value){
+		$.each(stylesResponse.message.items.sort(), function(index, value){
 			$("<option/>", { text: value }).appendTo(select);
 		});
 		select.appendTo(form.find("label[for=style]"));
 		select.val("apa");
 		
 		var select = $("<select/>", { name: "locale" });
-		$.each(localesResponse[0].sort(), function(index, value){
+		$.each(localesResponse.message.items.sort(), function(index, value){
 			$("<option/>", { text: value }).appendTo(select);
 		});
 		select.appendTo(form.find("label[for=locale]"));
