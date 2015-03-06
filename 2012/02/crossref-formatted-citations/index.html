@@ -73,18 +73,24 @@
 		$.getJSON("http://api.crossref.org/locales")
 	)
 	.done(function(stylesResponse, localesResponse){
+		var styles = stylesResponse.message.items;
+		styles.sort();
+		
+		var locales = localesResponse.message.items;
+		locales.sort();
+
 		var form = $("#input");
 		
 		var select = $("<select/>", { name: "style" });
-		$.each(stylesResponse.message.items.sort(), function(index, value){
-			$("<option/>", { text: value }).appendTo(select);
+		$.each(styles, function(){
+			$("<option/>", { text: this }).appendTo(select);
 		});
 		select.appendTo(form.find("label[for=style]"));
 		select.val("apa");
 		
 		var select = $("<select/>", { name: "locale" });
-		$.each(localesResponse.message.items.sort(), function(index, value){
-			$("<option/>", { text: value }).appendTo(select);
+		$.each(locales, function(){
+			$("<option/>", { text: this }).appendTo(select);
 		});
 		select.appendTo(form.find("label[for=locale]"));
 		select.val("en-US");
