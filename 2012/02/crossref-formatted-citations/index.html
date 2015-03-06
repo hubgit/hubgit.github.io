@@ -73,10 +73,10 @@
 		$.getJSON("http://api.crossref.org/locales")
 	)
 	.done(function(stylesResponse, localesResponse){
-		var styles = stylesResponse.message.items;
+		var styles = stylesResponse[0].message.items;
 		styles.sort();
 		
-		var locales = localesResponse.message.items;
+		var locales = localesResponse[0].message.items;
 		locales.sort();
 
 		var form = $("#input");
